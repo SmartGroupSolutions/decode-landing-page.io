@@ -337,7 +337,7 @@ html, body {
     );
 }
 
-.team-section__subtitulo {
+.team-section__subtitle {
     font-size: 0.9rem;
     font-weight: bold;
     color: #c0c0c0;
@@ -345,7 +345,7 @@ html, body {
     margin: 0 0 8px 0;
 }
 
-.team-section__titulo {
+.team-section__title {
     font-size: 2.2rem;
     margin: 0 0 40px 0;
     color: #EBEBEB;
@@ -368,12 +368,13 @@ html, body {
     width: 100%;
 }
 
-.team-card__image-espacio {
+.team-card__image-space {
     width: 170px;
     height: 200px;
     background-color: #443a60;
     border-radius: 5%;
     margin-bottom: 20px;
+    object-fit: cover;
 }
 
 .team-card__content {
@@ -383,7 +384,7 @@ html, body {
     align-items: center;
 }
 
-.team-card__nombre {
+.team-card__name {
     font-size: 1rem;
     font-weight: 400;
     color: #EBEBEB;
@@ -394,27 +395,27 @@ html, body {
     justify-content: center;
 }
 
-.team-card__rol {
+.team-card__role {
     font-size: 1rem;
     font-weight: 400;
     color: #d0d0d0;
     margin: 0 0 15px 0;
 }
 
-.team-card__redes {
+.team-card__social-media {
     margin-bottom: 20px;
 }
 
-.team-card__redes a {
+.team-card__social-media a {
     color: #ffffff;
     text-decoration: none;
     margin: 0 8px;
 }
-.team-card__redes a img{
+.team-card__social-media a img{
     filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(93deg) brightness(103%) contrast(103%);
 }
 
-.team-card__boton {
+.team-card__button {
     display: inline-block;
     background-color: #2EB884;
     color: #FFFFFF;
@@ -426,7 +427,7 @@ html, body {
     margin-top: auto;
 }
 
-.team-card__boton:hover {
+.team-card__button:hover {
     background-color: #1fad55;
 }
 
