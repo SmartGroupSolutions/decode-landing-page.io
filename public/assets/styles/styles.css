@@ -92,6 +92,15 @@ html, body {
 
 .header__logo {
     margin-left: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.header__logo img {
+    height: 45px;
+    width: 45px;
 }
 
 .header__title-main {
@@ -551,6 +560,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     align-self: center;
+    gap: 30px;
 }
 
 .section .caption {
@@ -562,6 +572,7 @@ html, body {
     letter-spacing: 1.00px;
     line-height: 10px;
 }
+
 
 .section .secondary-headline {
     align-self: center;
@@ -601,6 +612,7 @@ html, body {
     flex: 1;
     flex-grow: 1;
     display: flex;
+    gap: 20px;
 }
 
 .section .paragraph {
@@ -619,6 +631,7 @@ html, body {
     height: 70px;
     aspect-ratio: 1;
     object-fit: cover;
+    filter: invert();
 }
 
 .section .text-wrapper {
@@ -1016,7 +1029,7 @@ html, body {
 /* Descargas */
 .footer__downloads {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 8px;
     margin-bottom: 16px;
 }
@@ -1084,4 +1097,18 @@ html, body {
 .footer__bottom-links {
     display: flex;
     gap: 24px;
+}
+
+.footer__downloads img {
+    width: 120px;
+    height: 40px;
+}
+
+.footer__downloads .f_d_1 {
+    width: 135px;
+}
+
+.footer__logo img {
+    height: 30px;
+    width: 30px;
 }
