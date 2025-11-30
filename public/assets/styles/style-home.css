@@ -23,7 +23,7 @@ body {
 .main-header {
     height: 80px;
     width: 100%;
-    background-color: var(--white);
+    background-color: white;
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     justify-content: space-between;
@@ -139,7 +139,11 @@ body {
     border: 1px solid var(--border-light);
     min-width: 140px;
 }
-
+.widget-card--link{
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
 .stat-pill--fire i {
     color: #F97316;
     background-color: #FFF7ED;
