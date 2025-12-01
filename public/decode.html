@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decode</title>
+    <link rel="stylesheet" href="assets/styles/styles.css"> 
+    <link rel="stylesheet" href="assets/styles/style-decode.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header__logo-container">
+            <img src="assets/icons/logo.png" alt="DECODE Logo" class="header__logo">
+            <div class="header__text-container">
+                <h1 class="header__title">Decode</h1>
+                <p class="header__subtitle">Tu tutor personal de programación</p>
+            </div>
+        </div>
+        <div class="header__right">
+            <button class="btn btn--compile">Compilar</button>
+            <div class="header__profile">
+                <span class="header__profile-icon">E</span>
+                <span class="header__profile-name">Estudiante</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-layout">
+        
+        <section class="chat-column">
+            
+            <div class="chat-column__content">
+                <div class="chat-message chat-message--tutor">
+                    <p class="chat-message__time">12:34 PM</p>
+                    <p class="chat-message__text">
+                        <strong style="color: var(--color-accent);">¡Hola!</strong> Soy tu tutor personal de C++. Pregúntame sobre cualquier tema, desde conceptos básicos hasta proyectos complejos. ¡Estoy listo para ayudarte a codificar!
+                    </p>
+                </div>
+                
+                 <div class="chat-message chat-message--user">
+                    <p class="chat-message__text chat-message__text--user">
+                        ¿Cómo declaro una variable entera en C++?
+                    </p>
+                </div>
+
+                 <div class="chat-message chat-message--tutor">
+                    <p class="chat-message__text">
+                        ¡Excelente pregunta! Para declarar una variable entera en C++ y asignarle un valor, usas la palabra clave <code class="code-inline">int</code>.
+                        <br><br>
+                        Por ejemplo: <code class="code-inline">int edad = 30;</code> ¡Inténtalo ahora en el editor!
+                    </p>
+                </div>
+            </div>
+            
+            <div class="chat-column__input">
+                <input type="text" placeholder="Pregúntame sobre C++...">
+                <button class="btn--send">➤</button>
+            </div>
+        </section>
+
+        <section class="editor-column">
+            <div class="editor__header">
+                <h2>Escribe y ejecuta tu código C++</h2>
+                <p>Tu espacio de programación personal</p>
+            </div>
+            
+            <div class="editor__file-tabs">
+                <span class="editor__file-tab editor__file-tab--active">main.cpp</span>
+            </div>
+
+            <div class="editor__controls">
+                <button class="editor__btn">Copiar</button>
+                <button class="editor__btn">Cargar</button>
+                <button class="editor__btn">Guardar</button>
+                <button class="editor__btn">Reset</button>
+            </div>
+
+            <div class="editor__code-area">
+                <pre class="editor__pre">
+<span class="editor__line-number">1</span> <span class="syntax--keyword">#include</span><span class="syntax--keyword">&lt;iostream&gt;</span>
+<span class="editor__line-number">2</span> <span class="syntax--keyword">using</span> <span class="syntax--keyword">namespace</span> <span class="syntax--type">std</span>;
+<span class="editor__line-number">3</span> 
+<span class="editor__line-number">4</span> <span class="syntax--type">int</span> <span class="syntax--keyword">main</span><span class="syntax--type">()</span> {
+<span class="editor__line-number">5</span>     <span class="syntax--keyword">cout</span> &lt;&lt; <span class="syntax--string">"¡Hola, mundo!"</span> &lt;&lt; <span class="syntax--keyword">endl</span>;
+<span class="editor__line-number">6</span>     <span class="syntax--keyword">return</span> 0;
+<span class="editor__line-number">7</span> }
+                </pre>
+            </div>
+            
+            <div class="editor__terminal-header">
+                <button class="editor__terminal-btn editor__terminal-btn--active">Sistiglia</button>
+                <button class="editor__terminal-btn">Guardar</button>
+                <button class="editor__terminal-btn">Guardar</button>
+            </div>
+
+            <div class="editor__terminal-area">
+                <pre class="terminal__output">
+<span style="color: #ff5555;">main.cpp:5:18: error: expected ';' before 'cout'</span>
+<span style="color: #ff5555;">   cout &lt;&lt; "¡Hola, mundo!" &lt;&lt; endl</span>
+<span style="color: #999999;">                   ^</span>
+<span style="color: #ff5555;">                   ;</span>
+<span style="color: #ff5555;">main.cpp:7:1: error: expected '}' at end of input</span>
+<span style="color: #ff5555;">}</span>
+                </pre>
+            </div>
+            
+            <div class="editor__footer">
+                <span class="editor__footer-item">Líneas: 7</span>
+                <span class="editor__footer-item">Caracteres: 107</span>
+                <span class="editor__footer-item">Lenguaje: C++</span>
+                <span class="editor__footer-item editor__footer-item--status">Listo para compilar</span>
+            </div>
+        </section>
+
+        <section class="info-column">
+            <div class="info-column__tabs">
+                <button class="info-column__tab info-column__tab--active">Teoría</button>
+                <button class="info-column__tab">Ejercicios</button>
+            </div>
+            
+            <div class="info-column__content">
+                <div class="theory-section">
+                    <h3 class="theory__title">Conceptos Básicos</h3>
+                    <p class="theory__subtitle">Fundamentos esenciales</p>
+                    
+                    <div class="theory__card">
+                        <h4 class="theory__card-title">¿Qué es C++?</h4>
+                        <p class="theory__card-text">
+                            C++ es un lenguaje de programación potente y eficiente, perfecto para crear desde aplicaciones simples hasta sistemas complejos.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="exercise-section">
+                    <h3 class="exercise__title">Estructura básica</h3>
+                    
+                    <div class="exercise__card">
+                        <h4 class="exercise__card-title">1. Primer programa: "Hola Mundo"</h4>
+                        <p class="exercise__card-step">
+                            <strong>Paso 1:</strong> Incluye la librería <code class="code-inline">#include &lt;iostream&gt;</code>
+                        </p>
+                        <p class="exercise__card-step">
+                            <strong>Paso 2:</strong> Declara el uso de <code class="code-inline">using namespace std;</code>
+                        </p>
+                        <p class="exercise__card-step">
+                            <strong>Paso 3:</strong> Define la función <code class="code-inline">int main()</code>
+                        </p>
+                        <p class="exercise__card-step">
+                            <strong>Paso 4:</strong> Dentro de <code class="code-inline">main()</code>, usa <code class="code-inline">cout</code> para imprimir el mensaje.
+                        </p>
+                        
+                        <div class="exercise__code-example">
+                            <pre>
+<span class="syntax--keyword">#include &lt;iostream&gt;</span>
+<span class="syntax--keyword">using namespace</span> <span class="syntax--type">std</span>;
+
+<span class="syntax--type">int main()</span> {
+  <span class="syntax--keyword">cout</span> &lt;&lt; <span class="syntax--string">"¡Hola, mundo!"</span> &lt;&lt; <span class="syntax--keyword">endl</span>;
+  <span class="syntax--keyword">return</span> 0;
+}
+                            </pre>
+                        </div>
+                    </div>
+                    
+                     <div class="exercise__card">
+                        <h4 class="exercise__card-title">2. Variables y Tipos de Datos</h4>
+                        <p class="exercise__card-step">
+                            <strong>Paso 1:</strong> Declara una variable entera <code class="code-inline">int edad;</code>
+                        </p>
+                         <p class="exercise__card-step">
+                            <strong>Paso 2:</strong> Declara una variable de cadena <code class="code-inline">string nombre;</code>
+                        </p>
+                        <p class="exercise__card-step">
+                            <strong>Paso 3:</strong> Asigna valores a ambas variables.
+                        </p>
+                        <p class="exercise__card-step">
+                            <strong>Paso 4:</strong> Imprime un mensaje que combine <code class="code-inline">nombre</code> y <code class="code-inline">edad</code>.
+                        </p>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
