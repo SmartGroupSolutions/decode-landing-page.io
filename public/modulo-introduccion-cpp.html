@@ -56,7 +56,7 @@
 
     <svg class="map-svg" viewBox="0 0 400 900" preserveAspectRatio="none">
         <path class="path-track" d="M 200 50 Q 200 150, 320 150 T 320 300 Q 320 400, 200 400 T 80 550 Q 80 680, 200 680 L 200 850" fill="none" stroke="#E5E7EB" stroke-width="12" stroke-linecap="round" />
-        <path class="path-progress" d="M 200 50 Q 200 150, 320 150 T 320 300 Q 320 400, 200 400 " fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="round" />
+        <path class="path-progress" d="M 200 50 Q 200 150, 320 150 T 320 300 " fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="round" />
     </svg>
     <!--
         T 80 550
@@ -71,19 +71,18 @@
     </div>
 
     <div class="map-node map-node--pos-2">
-        <div class="node-icon node-icon--green">
+        <div class="node-icon node-icon--active" onclick="window.location.href='decode.html'">
             <i class="fas fa-code"></i>
-            <div class="node-badge node-badge--check"><i class="fas fa-check"></i></div>
         </div>
-        <span class="node-label">Variables</span>
+        <span class="node-label node-label--active" >Variables</span>
     </div>
 
     <div class="map-node map-node--pos-3">
-        <div class="node-icon node-icon--active">
+        <div class="node-icon node-icon--locked">
             <i class="fas fa-play"></i>
             <div class="ripple"></div>
         </div>
-        <span class="node-label node-label--active">Entrada y Salida</span>
+        <span class="node-label ">Entrada y Salida</span>
     </div>
 
     <div class="map-node map-node--pos-4">
