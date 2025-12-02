@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const codeEditor = document.getElementById('main-code-editor');
     const compileButton = document.querySelector('.btn--compile');
@@ -10,12 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const copyButton = document.getElementById('btn-copy');
     const resetButton = document.getElementById('btn-reset');
     const btnLoad = document.getElementById('btn-load');
+    const btnSave = document.getElementById('btn-save'); // Referencia al botón Guardar
     const saveButtonConfirm = document.getElementById('btn-save-confirm');
     const saveFilenameInput = document.getElementById('save-filename');
     const savedFilesList = document.getElementById('saved-files-list');
     
     const terminalOutput = document.querySelector('.terminal__output');
     const statusFooter = document.querySelector('.editor__footer-item--status');
+
+    // Referencias a los contenedores de menú 
+    const loadMenu = document.getElementById('load-menu'); 
+    const saveMenu = document.getElementById('save-menu'); 
 
     const KEYWORD_RESPONSE = '¡Excelente pregunta! Para declarar una variable entera en C++ y asignarle un valor, usas la palabra clave <code class="code-inline">int</code>.<br><br>Por ejemplo: <code class="code-inline">int edad = 30;</code> ¡Inténtalo ahora en el editor!';
     const DEFAULT_RESPONSE = 'No he entendido tu consulta, escríbela de nuevo';
@@ -55,8 +59,32 @@ int main() {
     const sectionTheory = document.getElementById('section-theory');
     const sectionExercises = document.getElementById('section-exercises');
 
+    const mainLayout = document.getElementById('main-layout');
+    const bottomNavButtons = document.querySelectorAll('.bottom-nav .nav-item');
+
+    bottomNavButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const view = button.getAttribute('data-view');
+            
+            // 1. Alternar la clase activa de la navegación inferior
+            bottomNavButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            // 2. Alternar la clase de vista activa en el main-layout
+            //    Esto es lo que controla la visibilidad de las columnas a través del CSS
+            mainLayout.className = 'main-layout'; // Reinicia las clases de vista
+            mainLayout.classList.add(`active-${view}-view`);
+
+            // Opcional: Si el botón de menú estaba abierto, cerrarlo
+            const dropdownMenu = document.getElementById('dropdown-menu');
+            if (dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    });
+
     // =========================================================
-    // LÓGICA DE RETROALIMENTACIÓN VISUAL
+    // LÓGICA DE RETROALIMENTACIÓN VISUAL Y UTILIDADES
     // =========================================================
 
     const showTerminalMessage = (message, statusText, isError = false) => {
@@ -71,7 +99,24 @@ int main() {
             statusFooter.style.color = color;
         }
     };
+    
+    /** Toggle visibility of a menu and close the other. */
+    const toggleMenu = (target) => { 
+        if (!loadMenu || !saveMenu) return; 
 
+        if (target === 'load') {
+            // Usamos 'block' para las listas de archivos
+            const isVisible = loadMenu.style.display === 'block'; 
+            loadMenu.style.display = isVisible ? 'none' : 'block';
+            saveMenu.style.display = 'none';
+            if (loadMenu.style.display === 'block') renderSavedFiles(); // Renderiza al abrir
+        } else if (target === 'save') {
+            // Usamos 'flex' para el input y botón de guardar
+            const isVisible = saveMenu.style.display === 'flex'; 
+            saveMenu.style.display = isVisible ? 'none' : 'flex';
+            loadMenu.style.display = 'none';
+        }
+    };
 
     // =========================================================
     // LÓGICA DE ALMACENAMIENTO (LOCALSTORAGE)
@@ -92,7 +137,7 @@ int main() {
         savedFilesList.innerHTML = ''; 
 
         if (filenames.length === 0) {
-            savedFilesList.innerHTML = '<li>No hay archivos guardados.</li>';
+            savedFilesList.innerHTML = '<li class="no-files">No hay archivos guardados.</li>';
             return;
         }
 
@@ -133,6 +178,7 @@ int main() {
             
             showTerminalMessage(`Archivo "${filename}" guardado exitosamente.`, "Guardado ✔️", false);
             saveFilenameInput.value = ''; 
+            toggleMenu('save'); 
         } catch (e) {
             console.error("Error al guardar en LocalStorage:", e);
             showTerminalMessage("Error al guardar el archivo. LocalStorage lleno o no disponible.", "Error ❌", true);
@@ -150,6 +196,8 @@ int main() {
                 
                 currentExerciseId = null;
                 exerciseCards.forEach(c => c.classList.remove(activeExerciseClass));
+                
+                toggleMenu('load'); 
                 
             } else {
                 showTerminalMessage(`Error: Archivo "${filename}" no encontrado.`, "Error de Carga ❌", true);
@@ -172,190 +220,79 @@ int main() {
             showTerminalMessage(`Archivo "${filename}" eliminado.`, "Eliminado ✔️", false);
             renderSavedFiles(); 
         } catch (e) {
-            console.error("Error al eliminar de LocalStorage:", e);
-            showTerminalMessage("Error al eliminar el archivo.", "Error al eliminar ❌", true);
+            console.error("Error al eliminar desde LocalStorage:", e);
+            showTerminalMessage("Error al eliminar el archivo desde el almacenamiento local.", "Error al eliminar ❌", true);
         }
     };
 
     // =========================================================
-    // LÓGICA DE CHAT INTERACTIVO
+    // MANEJADORES DE EVENTOS
     // =========================================================
 
-    function addMessage(text, sender) {
-        const chatMessageDiv = document.createElement('div');
-        chatMessageDiv.classList.add('chat-message');
-        
-        const now = new Date();
-        const timeString = now.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: true });
-
-        if (sender === 'user') {
-            chatMessageDiv.classList.add('chat-message--user');
-            chatMessageDiv.innerHTML = `
-                <p class="chat-message__text chat-message__text--user">
-                    ${text}
-                </p>
-            `;
-        } else if (sender === 'tutor') {
-            chatMessageDiv.classList.add('chat-message--tutor');
-            chatMessageDiv.innerHTML = `
-                <p class="chat-message__time">${timeString}</p>
-                <p class="chat-message__text">
-                    ${text}
-                </p>
-            `;
-        }
-        
-        chatContent.appendChild(chatMessageDiv);
-        chatContent.scrollTop = chatContent.scrollHeight;
-    }
-    
-    function handleSendMessage() {
-        const userInput = chatInput.value.trim();
-        if (userInput === '') return;
-
-        addMessage(userInput, 'user');
-        
-        const lowerCaseInput = userInput.toLowerCase();
-        let tutorResponse = DEFAULT_RESPONSE;
-        
-        if (KEYWORDS.some(keyword => lowerCaseInput.includes(keyword))) {
-            tutorResponse = KEYWORD_RESPONSE;
-        }
-
-        setTimeout(() => {
-            addMessage(tutorResponse, 'tutor');
-        }, 500);
-
-        chatInput.value = '';
-    }
-
-    if (sendButton) {
-        sendButton.addEventListener('click', handleSendMessage);
-    }
-    if (chatInput) {
-        chatInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                e.preventDefault(); 
-                handleSendMessage();
-            }
-        });
-    }
-
-    // =========================================================
-    // LÓGICA DE BOTONES DE CONTROL (COPIAR, GUARDAR, CARGAR, RESET)
-    // =========================================================
-
-    if (copyButton) {
-        copyButton.addEventListener('click', async () => {
-            try {
-                if (codeEditor.value.trim() === '') {
-                    showTerminalMessage("El editor está vacío. No hay contenido para copiar.", "Copiado pendiente", true);
-                    return;
-                }
-                await navigator.clipboard.writeText(codeEditor.value);
-                showTerminalMessage("Código copiado al portapapeles.", "Copiado ✔️", false);
-            } catch (err) {
-                console.error('Error al copiar: ', err);
-                showTerminalMessage("Error al copiar el código. Intenta copiar manualmente (Ctrl+C).", "Error ❌", true);
-            }
-        });
-    }
-
-    if (saveButtonConfirm) {
-        saveButtonConfirm.addEventListener('click', () => {
-            const filename = saveFilenameInput.value.trim();
-            const content = codeEditor.value;
-            
-            if (filename === '') {
-                showTerminalMessage("Introduce un nombre para el archivo antes de guardar.", "Guardar pendiente", true);
-                return;
-            }
-            if (content.trim() === '') {
-                showTerminalMessage("El editor está vacío. No hay nada que guardar.", "Guardar pendiente", true);
-                return;
-            }
-            
-            saveFile(filename, content);
-        });
-    }
-
-    if (resetButton) {
-        resetButton.addEventListener('click', () => {
-            codeEditor.value = ''; 
-            currentExerciseId = null; 
-            showTerminalMessage(`Editor reseteado. Código borrado.`, "Reseteado ✔️", false);
-            exerciseCards.forEach(c => c.classList.remove(activeExerciseClass));
-        });
-    }
-
-    // 4. Lógica del menú Cargar (Renderizar al hacer hover)
+    // Evento para ABRIR/CERRAR el menú Cargar (¡AÑADIDO!)
     if (btnLoad) {
-        btnLoad.parentElement.addEventListener('mouseenter', renderSavedFiles);
+        btnLoad.addEventListener('click', () => toggleMenu('load'));
     }
 
-    // =========================================================
-    // LÓGICA DE EJERCICIOS
-    // =========================================================
-    
-    const selectExercise = (id) => {
-        currentExerciseId = id;
-        const card = document.querySelector(`.exercise__card[data-exercise-id="${id}"]`);
-        const exercise = exercisesData[id];
-
-        exerciseCards.forEach(c => c.classList.remove(activeExerciseClass));
-        if (card) {
-            card.classList.add(activeExerciseClass);
-        }
-
-        if (codeEditor && exercise) {
-            if (id === 'ex1') {
-                codeEditor.value = ''; 
-            } else {
-                codeEditor.value = exercise.initialCode.trim();
-            }
-            codeEditor.focus();
-        }
-        
-        showTerminalMessage(`Ejercicio ${id} seleccionado. Escribe tu código.`, `Ejercicio: ${id} activo`, false);
+    // Evento para ABRIR/CERRAR el menú Guardar (¡AÑADIDO!)
+    if (btnSave) {
+        btnSave.addEventListener('click', () => toggleMenu('save'));
     }
-    
-    const switchTab = (targetTab) => {
-        tabButtons.forEach(btn => btn.classList.remove(activeTabClass));
-        document.querySelector(`[data-tab="${targetTab}"]`).classList.add(activeTabClass);
 
-        if (targetTab === 'theory') {
-            sectionTheory.classList.remove(hiddenClass);
-            sectionExercises.classList.add(hiddenClass);
-            exerciseCards.forEach(c => c.classList.remove(activeExerciseClass));
-            currentExerciseId = null;
-        } else if (targetTab === 'exercises') {
-            sectionTheory.classList.add(hiddenClass);
-            sectionExercises.classList.remove(hiddenClass);
-            
-            if (!currentExerciseId) {
-                selectExercise('ex1'); 
-            }
-        }
-    };
-
+    // Lógica de Tabs
     tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.getAttribute('data-tab');
-            switchTab(targetTab);
+        button.addEventListener('click', (e) => {
+            const targetTab = e.target.getAttribute('data-tab');
+            
+            tabButtons.forEach(btn => btn.classList.remove(activeTabClass));
+            e.target.classList.add(activeTabClass);
+
+            sectionTheory.classList.add(hiddenClass);
+            sectionExercises.classList.add(hiddenClass);
+
+            if (targetTab === 'theory') {
+                sectionTheory.classList.remove(hiddenClass);
+            } else if (targetTab === 'exercises') {
+                sectionExercises.classList.remove(hiddenClass);
+            }
         });
     });
 
+    // Lógica para el botón del menú principal
+    const menuToggle = document.getElementById('menu-toggle');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    if (menuToggle && dropdownMenu) {
+        menuToggle.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('show');
+        });
+        
+        // Cerrar menú si se hace clic fuera
+        document.addEventListener('click', (e) => {
+            if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target) && dropdownMenu.classList.contains('show')) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+    }
+
+    // Cargar ejercicio al hacer clic en la tarjeta
     exerciseCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const id = card.getAttribute('data-exercise-id');
-            selectExercise(id);
+        card.addEventListener('click', (e) => {
+            exerciseCards.forEach(c => c.classList.remove(activeExerciseClass));
+            card.classList.add(activeExerciseClass);
+            currentExerciseId = card.getAttribute('data-exercise-id');
+            
+            if (exercisesData[currentExerciseId] && codeEditor) {
+                codeEditor.value = exercisesData[currentExerciseId].initialCode.trim();
+                showTerminalMessage(`Ejercicio ${currentExerciseId} cargado. ¡A codificar!`, "Listo para compilar", false);
+            }
         });
     });
-    
+
+    // Evento de Compilar
     if (compileButton) {
         compileButton.addEventListener('click', () => {
             if (!currentExerciseId) {
-                showTerminalMessage("Por favor, selecciona un ejercicio antes de Compilar.", "Compilación pendiente", true);
+                showTerminalMessage("Por favor, selecciona un ejercicio antes de Compilar.", "Compilación pendiente ⚠️", true);
                 return;
             }
 
@@ -375,7 +312,7 @@ int main() {
                     if (statusIndicator) {
                         statusIndicator.classList.add(completedStatusClass);
                     }
-                    showTerminalMessage("Compilación exitosa. ¡Ejercicio completado!", "¡COMPLETADO! 🎉", false);
+                    showTerminalMessage("Compilación exitosa. ¡Ejercicio completado! 🎉", "¡COMPLETADO! ✔️", false);
 
                 } else {
                     showTerminalMessage(
@@ -387,9 +324,110 @@ int main() {
             }, 500);
         });
     }
+    
+    // Evento de Copiar
+    if (copyButton) {
+        copyButton.addEventListener('click', () => {
+            if (codeEditor) {
+                navigator.clipboard.writeText(codeEditor.value).then(() => {
+                    showTerminalMessage("Código copiado al portapapeles.", "Copiado ✔️", false);
+                }).catch(err => {
+                    showTerminalMessage("Error al copiar el código.", "Error de Copia ❌", true);
+                    console.error('Error al copiar el código:', err);
+                });
+            }
+        });
+    }
 
+    // Evento de Resetear
+    if (resetButton) {
+        resetButton.addEventListener('click', () => {
+            if (currentExerciseId && exercisesData[currentExerciseId] && codeEditor) {
+                codeEditor.value = exercisesData[currentExerciseId].initialCode.trim();
+                showTerminalMessage(`Editor reiniciado al código inicial del ejercicio ${currentExerciseId}.`, "Reset ✔️", false);
+            } else if (codeEditor) {
+                codeEditor.value = '';
+                showTerminalMessage("Editor reiniciado a vacío.", "Reset ✔️", false);
+            }
+        });
+    }
+    
+    // Evento de Guardar (Confirmar)
+    if (saveButtonConfirm && saveFilenameInput && codeEditor) {
+        saveButtonConfirm.addEventListener('click', () => {
+            const filename = saveFilenameInput.value.trim();
+            const content = codeEditor.value;
+            
+            if (filename.length < 3) {
+                showTerminalMessage("Por favor, ingresa un nombre de archivo válido (mínimo 3 caracteres).", "Error de Guardado ❌", true);
+                return;
+            }
+            if (content.trim() === "") {
+                showTerminalMessage("El editor está vacío. No hay nada para guardar.", "Error de Guardado ❌", true);
+                return;
+            }
+            
+            saveFile(filename, content);
+        });
+    }
+
+    // --- LÓGICA DE CHAT ---
+
+    const addMessageToChat = (text, isTutor = true) => {
+        const messageClass = isTutor ? 'chat-message--tutor' : 'chat-message--user';
+        const textClass = isTutor ? '' : 'chat-message__text--user';
+        const time = new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+
+        const newMessage = document.createElement('div');
+        newMessage.classList.add('chat-message', messageClass);
+        newMessage.innerHTML = `
+            <p class="chat-message__time">${time}</p>
+            <p class="chat-message__text ${textClass}">${text}</p>
+        `;
+        chatContent.appendChild(newMessage);
+        chatContent.scrollTop = chatContent.scrollHeight;
+    };
+    
+    const sendUserMessage = () => {
+        const message = chatInput.value.trim();
+        if (message === '') return;
+
+        addMessageToChat(message, false); // Mensaje del usuario
+        chatInput.value = '';
+
+        // Generar respuesta del tutor
+        let tutorResponse = DEFAULT_RESPONSE;
+        const normalizedMessage = message.toLowerCase();
+        
+        for (const keyword of KEYWORDS) {
+            if (normalizedMessage.includes(keyword)) {
+                tutorResponse = KEYWORD_RESPONSE;
+                break;
+            }
+        }
+        
+        setTimeout(() => {
+            addMessageToChat(tutorResponse, true); // Respuesta del tutor
+        }, 800);
+    };
+
+    if (sendButton) {
+        sendButton.addEventListener('click', sendUserMessage);
+    }
+    if (chatInput) {
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendUserMessage();
+            }
+        });
+    }
+
+    // --- INICIALIZACIÓN ---
     if (codeEditor) {
         codeEditor.value = ''; 
     }
     renderSavedFiles(); 
+
+
 });
+
