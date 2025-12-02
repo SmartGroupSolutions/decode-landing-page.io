@@ -8,64 +8,37 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
     <script src="https://kit.fontawesome.com/350b7ab1bf.js" crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="assets/styles/styles.css"/>
-
     <link rel="stylesheet" href="assets/styles/styles-gamificacion.css"/>
-
 </head>
 
 <body>
 
-<header class="header">
-    <section class="header__logo">
-        <img src="assets/icons/logo.png" alt="Decode Logo">
-        <div class="header__title">
-            <h2 class="header__title-main">Decode</h2>
-            <p class="header__title-sub">SmartSolutions</p>
-        </div>
-    </section>
+<header class="main-header">
+    <div class="main-header__avatar">
+        <div class="user-circle-img header-avatar"></div>
 
-    <section class="header__interaction">
-        <nav class="header__nav">
-            <a href="index.html" class="header__nav-link">Inicio</a>
-            <a href="comunidad.html" class="header__nav-link">Comunidad</a>
-            <a href="gamificacion.html" class="header__nav-link active-link">Logros</a>
-            <a href="#" class="header__nav-link">Suscripciones</a>
-        </nav>
-        <div class="header__actions">
-            <div class="header__actions">
-                <div class="nav-stat streak">
-                    <i class="fas fa-rocket streak-icon"></i>
-                    <span>5</span>
-                </div>
+    </div>
+    <a href="#" class="main-header__logo">Decode</a>
 
-                <div class="nav-stat profile-summary">
-                    <div class="avatar-circle">
-                        <img src="assets/icons/circle-user-round.svg" alt="Avatar">
-                    </div>
-                    <div class="points-info">
-                        <span class="points-num">1.018</span>
-                        <span class="points-unit">pts</span>
-                    </div>
-                    <i class="fas fa-chevron-down arrow-icon"></i>
-                </div>
+    <button class="main-header__menu-btn" id="menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
-                <div class="nav-divider"></div>
-
-                <div class="nav-stat language-btn">
-                    <i class="fas fa-language"></i>
-                </div>
-
+    <div class="dropdown-menu" id="dropdown-menu">
+        <a href="home.html" class="dropdown-item"><i class="fas fa-home"></i> Inicio</a>
+        <a href="onboarding.html" class="dropdown-item"><i class="fas fa-bolt"></i> Rutas</a>
+        <a href="comunidad.html" class="dropdown-item"><i class="fas fa-users"></i> Comunidad</a>
+        <a href="gamificacion.html" class="dropdown-item active-dropdown"><i class="fas fa-trophy"></i> Logros</a>
+        <a href="profile.html" class="dropdown-item"><i class="fas fa-user"></i> Perfil</a>
+    </div>
 </header>
 
 <main class="main-wrapper">
     <div class="container">
 
         <div class="top-nav">
-            <a href="index.html" class="back-btn">
+            <a href="home.html" class="back-btn">
                 <i class="fas fa-arrow-left"></i> Volver al inicio
             </a>
         </div>
@@ -73,9 +46,9 @@
         <h1 class="page-title text-gradient">Mis Logros</h1>
 
         <div class="progress-box">
-            <h2 class="progress-text">Has desbloqueado <strong>3 de 8</strong> logros</h2>
+            <h2 class="progress-text">Has desbloqueado <strong>3 de 6</strong> logros</h2>
             <div class="progress-track">
-                <div class="progress-fill" style="width: 37.5%;"></div>
+                <div class="progress-fill" style="width: 50%;"></div>
             </div>
         </div>
 
@@ -139,13 +112,44 @@
     </div>
 </main>
 
-<footer class="footer">
-    <div class="footer__container">
-        <div class="footer__bottom" style="border:none; padding-top:0;">
-            <p class="footer__copyright">SmartSolutions © 2025. All rights reserved.</p>
-        </div>
-    </div>
-</footer>
+<nav class="bottom-nav">
+    <a href="home.html" class="nav-item"><i class="fas fa-home"></i><span>Inicio</span></a>
+    <a href="onboarding.html" class="nav-item"><i class="fas fa-bolt"></i><span>Rutas</span></a>
+    <a href="comunidad.html" class="nav-item"><i class="fas fa-users"></i><span>Comunidad</span></a>
+    <a href="profile.html" class="nav-item active"><i class="fas fa-user"></i><span>Perfil</span></a>
+</nav>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const menuToggle = document.getElementById('menu-toggle');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const menuLinks = document.querySelectorAll('.dropdown-item');
+
+
+        const currentPage = window.location.pathname.split("/").pop();
+
+        menuLinks.forEach(link => {
+            link.classList.remove('active-dropdown');
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active-dropdown');
+            }
+        });
+
+        if (menuToggle && dropdownMenu) {
+            menuToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                dropdownMenu.classList.toggle('show');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdownMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                }
+            });
+        }
+    });
+
+</script>
 
 </body>
 </html>
