@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil | Decode</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap">
+
+    <script src="https://kit.fontawesome.com/350b7ab1bf.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="assets/styles/global.css">
+    <link rel="stylesheet" href="assets/styles/style-profile.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="avatar">
+            <img data-avatar id="headeravatar" class="avatar-img" src="assets/images/Laufey-avatar.jpg" alt="avatar-Laufey-img">
+        </div>
+        <a href="#" class="header-logo">PERFIL</a>
+
+        <button class="menu-btn" id="menu-toggle">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="dropdown-menu" id="dropdown-menu">
+            <a href="home.html" class="menu-item"><i class="fas fa-home"></i> Inicio</a>
+            <a href="onboarding.html" class="menu-item"><i class="fas fa-bolt"></i> Rutas</a>
+            <a href="comunidad.html" class="menu-item"><i class="fas fa-users"></i> Comunidad</a>
+            <a href="profile.html" class="menu-item"><i class="fas fa-user"></i> Perfil</a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="content-wrapper">
+            <h1 class="button-title">
+                <img class="config-icon" src="assets/images/config.png" alt="config-icon">
+                <button class="button-span" onclick="window.location.href='configuration.html'">Configuración</button>
+            </h1>
+            <img data-avatar id="external-pfp" class="pfp-img" src="assets/images/Laufey-avatar.jpg" alt="profile-picture-Laufey-img">
+            <h2 class="section-subtitle">Datos Personales</h2>
+            <div class="data-list">
+                <div id="name-tag" class="personal-data">Nombre de usuario: johndoe</div>
+                <div id="email-tag" class="personal-data">Correo electrónico: john@doe.com</div>
+                <div id="learning-level-tag" class="personal-data">Nivel de aprendizaje: Básico - 30%</div>
+                <div id="solved-exercises-button" class="personal-bttn" onclick="window.location.href='solved-exercises.html'">Historial de Problemas Resueltos</div>
+                <div id="prices-and-awards-button" class="personal-bttn" onclick="window.location.href='gamificacion.html'">Logros y Recompensas</div>
+            </div>
+        </div>
+    </main>
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fas fa-home"></i>
+            <span>Inicio</span>
+        </a>
+        <a href="onboarding.html" class="nav-item">
+            <i class="fas fa-bolt"></i>
+            <span>Rutas</span>
+        </a>
+        <a href="comunidad.html" class="nav-item">
+            <i class="fas fa-users"></i>
+            <span>Comunidad</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i class="fas fa-user"></i>
+            <span>Perfil</span>
+        </a>
+    </nav>
+    <script src="./assets/scripts/app.js"></script>
+    <script src="./assets/scripts/script-profile.js"></script>
+</body>
+</html>
