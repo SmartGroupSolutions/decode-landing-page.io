@@ -3,17 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decode – Reto Python</title>
+    <title>Decode | Reto Python</title>
     <link rel="stylesheet" href="assets/styles/styles.css">
+    <link rel="stylesheet" href="assets/styles/global.css">
+    
     <link rel="stylesheet" href="assets/styles/style-challenge.css">
+    
     <script src="https://kit.fontawesome.com/350b7ab1bf.js" crossorigin="anonymous"></script>
 </head>
 <body>
     <header class="main-header">
         <div class="main-header__avatar">
-            <img class="header__profile-icon" src="assets/images/Laufey-avatar.jpg" alt="">
+            <img data-avatar id="headeravatar" class="header__profile-icon" src="assets/images/Laufey-avatar.jpg" alt="avatar-Laufey-img">
         </div>
-        <a href="home.html" class="main-header__logo">Decode</a>
+        <a href="home.html" class="main-header__logo">RETO DECODE</a>
         <button class="main-header__menu-btn" id="menu-toggle">
             <i class="fas fa-bars"></i>
         </button>
@@ -26,7 +29,6 @@
     </header>
 
     <main class="main-layout active-chat-view" id="main-layout">
-        <!-- ====== COLUMNA CHAT ====== -->
         <section class="chat-column" data-view="chat">
             <div class="chat-column__content">
                 <div class="chat-message chat-message--tutor">
@@ -146,7 +148,7 @@
             <button class="btn btn--primary" id="xp-modal-home">Volver al inicio</button>
         </div>
     </div>
-
+    <script src="./assets/scripts/app.js"></script>
     <script src="assets/scripts/script-challenge.js"></script>
 </body>
 </html>
